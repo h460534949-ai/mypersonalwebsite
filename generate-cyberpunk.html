@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Cyberpunk Background</title>
+</head>
+<body>
+    <canvas id="canvas" width="1920" height="1080"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Dark background
+        ctx.fillStyle = '#050514';
+        ctx.fillRect(0, 0, 1920, 1080);
+        
+        // Neon grid floor
+        for (let i = 0; i < 1080; i += 40) {
+            const alpha = 1 - i / 1080;
+            ctx.strokeStyle = `rgba(0, 255, 255, ${alpha})`;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(1920, i);
+            ctx.stroke();
+        }
+        
+        // Perspective lines
+        for (let i = 0; i < 1920; i += 60) {
+            ctx.strokeStyle = 'rgba(255, 0, 255, 0.6)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(i, 540);
+            ctx.lineTo(960 + (i - 960) * 3, 1080);
+            ctx.stroke();
+        }
+        
+        // Neon buildings
+        const colors = ['#ff00ff', '#00ffff', '#ff0080', '#8000ff'];
+        for (let x = 100; x < 1920; x += 200) {
+            const width = 80 + Math.random() * 70;
+            const height = 300 + Math.random() * 300;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            ctx.fillStyle = color + '33';
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.fillRect(x, 540 - height, width, height);
+            ctx.strokeRect(x, 540 - height, width, height);
+            
+            // Windows
+            for (let wy = 540 - height + 20; wy < 520; wy += 30) {
+                for (let wx = x + 10; wx < x + width - 10; wx += 25) {
+                    if (Math.random() > 0.3) {
+                        ctx.fillStyle = Math.random() > 0.5 ? color : '#ffff00';
+                        ctx.fillRect(wx, wy, 15, 20);
+                    }
+                }
+            }
+        }
+        
+        // Neon lights and signs
+        for (let i = 0; i < 30; i++) {
+            const x = Math.random() * 1920;
+            const y = Math.random() * 540;
+            const size = 5 + Math.random() * 10;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Flying vehicle trails
+        for (let i = 0; i < 15; i++) {
+            const x = Math.random() * 1920;
+            const y = 100 + Math.random() * 340;
+            const length = 50 + Math.random() * 100;
+            
+            ctx.strokeStyle = 'rgba(255, 0, 255, 0.8)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + length, y);
+            ctx.stroke();
+        }
+        
+        // Download the image
+        canvas.toBlob(function(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cyberpunk-background.png';
+            a.click();
+        });
+    </script>
+</body>
+</html>
