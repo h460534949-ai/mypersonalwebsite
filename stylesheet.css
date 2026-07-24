@@ -172,7 +172,9 @@
 
     img {
 
-        max-width: 600px;
+        width: 900px;
+
+        max-width: 100%;
 
         height: auto;
 
